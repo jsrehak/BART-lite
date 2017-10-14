@@ -38,8 +38,42 @@ class TestIntegration_Mesh_Materials:
         mesh_cells = 4
         domain_upper = 10
         mesh = Mesh(mesh_cells, domain_upper, self.testmap)
-        eq_(len(mesh.cells()), mesh_cells**2)
+        eq_(len(mesh.cells()), mesh_cells**2)                          
+        
+    def test_anti_symmetric_in_x(self):
+        """ cells in antisymmetric arrangement should return correct
+        values """
+        layout = """ 1 1 2 2
+                     1 1 2 2
+                     1 1 2 2
+                     1 1 2 2"""
+        anti_map_x = mat_map(lib=self.lib, layout = layout,
+                             layout_dict = self.mat_dict, x_max = 10,
+                             n = 20)
+        mesh = Mesh(20, 10, anti_map_x)
+        for cell in mesh.cells():
+            if cell.index()[1] < 10:
+                eq_(cell.get('id'), 'test_mat')
+            else:
+                eq_(cell.get('id'), 'test_mat2')
 
+    def test_anti_symmetric_in_y(self):
+        """ cells in antisymmetric arrangement should return correct
+        values """
+        layout = """ 2 2 2 2
+                     2 2 2 2
+                     1 1 1 1
+                     1 1 1 1"""
+        anti_map_y = mat_map(lib=self.lib, layout = layout,
+                             layout_dict = self.mat_dict, x_max = 10,
+                             n = 20)
+        mesh = Mesh(20, 10, anti_map_y)
+        for cell in mesh.cells():
+            if cell.index()[0] < 10:
+                eq_(cell.get('id'), 'test_mat')
+            else:
+                eq_(cell.get('id'), 'test_mat2')
+        
     def test_mesh_props(self):
         mesh_cells = 4
         domain_upper = 10

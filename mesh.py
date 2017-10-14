@@ -167,8 +167,8 @@ class Cell(object):
     # MATERIAL PROPERTIES  ==============================================
     def get(self, prop):
         try:
-            x = self._length*(self._index[0] + 0.5)
-            y = self._length*(self._index[1] + 0.5)
+            x = self._length*(self._index[1] + 0.5)
+            y = self._length*(self._index[0] + 0.5)
     
             return self._mat_map.get(prop, loc=(x,y))
         except AttributeError:
