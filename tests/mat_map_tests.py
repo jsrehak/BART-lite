@@ -2,6 +2,7 @@ from nose.tools import *
 from material import mat_map
 from material import mat_lib
 import numpy as np
+from random import *
 
 testData_loc = './tests/testData/materials/'
 
@@ -28,6 +29,7 @@ class TestFunctionality:
 
     # TEST CONSTRUCTOR ###############################################
 
+   
     def test_init_with_good_map(self):
         """ Initializing with a good map should build the mapping
         correctly """
@@ -38,6 +40,27 @@ class TestFunctionality:
                                   ['1', '2', '2', '1'],
                                   ['1', '1', '1', '1']])
 
+    @raises(AssertionError)
+    def test_low_cell_numbers(self):
+        """ Mesh total cells must be a multiple of the map total cells """
+        layout = """ 1 1 1
+                     2 2 2
+                     1 1 1 """
+        three_map = mat_map(lib = self.lib, layout = layout,
+                            layout_dict = self.mat_dict, x_max = 30,
+                            n = 7)
+
+    @raises(AssertionError)
+    def test_bad_cell_numbers(self):
+        """ Mesh total cells must be a multiple of the map total cells """
+        layout = """ 1 1 1
+                     2 2 2
+                     1 1 1 """
+        three_map = mat_map(lib = self.lib, layout = layout,
+                            layout_dict = self.mat_dict, x_max = 30,
+                            n = 0)
+                
+        
     @raises(AssertionError)
     def test_init_with_bad_map(self):
         badMap = mat_map(lib=self.lib, layout=self.badmap,

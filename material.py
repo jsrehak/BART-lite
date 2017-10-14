@@ -355,6 +355,8 @@ class mat_map():
         except ValueError:
             raise ValueError("x and y domain limits must be numbers")
 
+        assert n > 0, "Total cells must be an integer greater than 0"
+        
         self.dx = x[1]/float(n)
         self.dy = y[1]/float(n)
         self.n = int(n)
@@ -368,6 +370,12 @@ class mat_map():
 
         assert n_dim.is_integer(),\
             "Layout must have a square number of entries"
+
+        assert n >= n_dim, "Total cells n must be greater than " +\
+            "or equal to the size of the provided layout"
+
+        assert (n % n_dim) == 0, "n (mesh cells)  must be a multiple of the size" +\
+            " of the provided layout"
 
         n_dim = int(n_dim)
 
